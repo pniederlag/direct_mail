@@ -139,6 +139,11 @@ class tx_directmail_checkjumpurl {
 				$GLOBALS['TYPO3_DB']->sql_free_result($resMailing);
 				if (!$jumpurl) {
 					die('Error: No further link. Please report error to the mail sender.');
+				} else {
+					// jumpurl has been validated by lookup of id in direct_mail tables
+					// for this reason it is save to set the juHash
+					// set juHash as done for external_url in core: http://forge.typo3.org/issues/46071
+					t3lib_div::_GETset(t3lib_div::hmac($jumpurl, 'jumpurl'), 'juHash');
 				}
 			} else {
 					// jumpUrl is not an integer -- then this is a URL, that means that the "dmailerping"
@@ -164,8 +169,6 @@ class tx_directmail_checkjumpurl {
 
 		// finally set the jumpURL to the TSFE object
 		$feObj->jumpurl = $jumpurl;
-		# set juHash as done for external_url in core: http://forge.typo3.org/issues/46071
-		t3lib_div::_GETset(t3lib_div::hmac($jumpurl, 'jumpurl'), 'juHash');
 	}
 
 }
