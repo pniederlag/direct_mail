@@ -164,6 +164,8 @@ class tx_directmail_checkjumpurl {
 
 		// finally set the jumpURL to the TSFE object
 		$feObj->jumpurl = $jumpurl;
+		# set juHash as done for external_url in core: http://forge.typo3.org/issues/46071
+		t3lib_div::_GETset(t3lib_div::hmac($jumpurl, 'jumpurl'), 'juHash');
 	}
 
 }
